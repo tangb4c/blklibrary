@@ -17,6 +17,7 @@ namespace comm
             struct timeval  m_begin_tm;
             struct timeval  m_end_tm;
     };
+    //this is blake made.
 }
 #endif
 

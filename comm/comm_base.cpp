@@ -11,7 +11,7 @@ namespace comm
 	 CCommException::CCommException(const char* fmt...) throw():m_errcode(-1)
 	 {
 	 	/*
-		//栈的信息
+		//鏍堢殑淇℃伅
 		void * _array[15];
 		int _size = backtrace(_array, 15);
 		char ** _symbols = backtrace_symbols(_array, _size);
@@ -32,7 +32,7 @@ namespace comm
 	 CCommException::CCommException(int errcode, const char* fmt...) throw():m_errcode(errcode)
 	 {
 	 	/*
-		 //栈的信息
+		 //鏍堢殑淇℃伅
 		 void * _array[15];
 		 int _size = backtrace(_array, 15);
 		 char ** _symbols = backtrace_symbols(_array, _size);

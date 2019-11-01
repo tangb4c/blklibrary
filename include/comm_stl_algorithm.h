@@ -85,7 +85,7 @@ inline void StlErase(T *stl_containter, const typename T::key_type one)
    stl_containter->erase(one);
 }
 
-//获取first
+//鑾峰彇first
 template<class T> struct select1st : public std::unary_function<const T, typename T::first_type>
 {
    typename T::first_type operator()(const T& x)
@@ -94,7 +94,7 @@ template<class T> struct select1st : public std::unary_function<const T, typenam
    }
 };
 
-//获取second
+//鑾峰彇second
 template<class T> struct select2nd : public std::unary_function<const T, typename T::second_type>
 {
    typename T::second_type operator()(const T& x)

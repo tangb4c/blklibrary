@@ -1,6 +1,6 @@
 /*
 @note:
-	读取配置文件, #后面的内容为注释,	支持[section]章节
+	璇诲彇閰嶇疆鏂囦欢, #鍚庨潰鐨勫唴瀹逛负娉ㄩ噴,	鏀寔[section]绔犺妭
 @eg:
 	#define CONFIG_NOTIFY_TEST (*CSingleton<CBitMapConfigFile>::instance())("notify", "test").c_str())
 @config file:

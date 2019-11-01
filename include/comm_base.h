@@ -1,13 +1,13 @@
 /******************************************************************************
- * comm_base.h - ������Ļ��༰�����쳣��Ķ���
+ * comm_base.h - 公共库的基类及公共异常类的定义
  * 
  * Copyright 2009-2009 Tencent Co.,Ltd.
  * 
  * DESCRIPTION: - 
- *     ������Ļ��༰�����쳣��Ķ���,����ʱ����ϱ���ѡ��:-rdynamic �쳣������ջ��Ϣ
- *     �����쳣��ʹ�ü�����:
- *     �쳣�Ҷ���Ϊͨ����ʱ�ȴ������ԡ��ͷ��ڴ桢�������Դ�ķ������Ϳ��Խ���������
- *     ����״̬��ʣ���״̬
+ *     公共库的基类及公共异常类的定义,编译时请加上编译选项:-rdynamic 异常将附加栈信息
+ *     对于异常的使用及定义:
+ *     异常我定义为通过延时等待、重试、释放内存、句柄等资源的方法，就可以解决的情况；
+ *     错误状态即剩余的状态
  * modification history
  * --------------------
  * 01a, 2009-dec-17, comm written
@@ -24,8 +24,8 @@
 #include <sstream>
 namespace comm
 {
-    /*�궨�� */
-    //�׳��쳣��Ϣ
+    /*宏定义 */
+    //抛出异常信息
     #define __OFILE__ basename((char*)__FILE__)
     #ifdef DEBUG
     #define THROW_EX(fmt, msg...) do{ \
@@ -119,7 +119,7 @@ namespace comm
             const noncopyable& operator= (const noncopyable&);
     };
 
-    //�쳣��
+    //异常类
     class CCommException:public std::exception
     {
         public:

@@ -14,9 +14,9 @@ namespace comm
 {
     using namespace std;
     /******************************************************************************
-     * CUdpClient - UDPÀà
+     * CUdpClient - UDPç±»
      * DESCRIPTION: - 
-     *    ·â×°UDP²Ù×÷£¬µ±Óöµ½ÍøÂçÁ¬½ÓÊ§°Ü£¬³¬Ê±£¬²ÎÊı´íÎóÊ±£¬½«Å×³öÒì³£ 
+     *    å°è£…UDPæ“ä½œï¼Œå½“é‡åˆ°ç½‘ç»œè¿æ¥å¤±è´¥ï¼Œè¶…æ—¶ï¼Œå‚æ•°é”™è¯¯æ—¶ï¼Œå°†æŠ›å‡ºå¼‚å¸¸ 
      * Input: 
      * Output: 
      * Returns: 
@@ -42,16 +42,16 @@ namespace comm
 			/// </summary>
 			/// <param name="ip"></param>
 			/// <param name="port"></param>
-			/// <param name="timeout_ms">Èôtimeout_msĞ¡ÓÚµÈÓÚ0,ÔòÎª×èÈûÄ£Ê½</param>
+			/// <param name="timeout_ms">è‹¥timeout_mså°äºç­‰äº0,åˆ™ä¸ºé˜»å¡æ¨¡å¼</param>
 			/// <returns></returns>
 			virtual void SetHost(const string& ip, unsigned port, int timeout_ms = 100)throw(CCommException);
 			virtual int Init()throw(CCommException);
 			virtual void Close();
 			virtual const string& GetHostInfo()const;
             /******************************************************************************
-                 * CUdpClient - ·¢ËÍÊı¾İ
+                 * CUdpClient - å‘é€æ•°æ®
                  * DESCRIPTION: - 
-                 *    ·¢ËÍÊı¾İ 
+                 *    å‘é€æ•°æ® 
                  * Input: 
                  * Output: 
                  * Returns: 
@@ -63,12 +63,12 @@ namespace comm
                  ******************************************************************************/
 			virtual int Send(const void* ibuf, unsigned ibuflen, bool until_succ = false)throw(CCommException);
              /******************************************************************************
-                 * CUdpClient - ½ÓÊÕÊı¾İ£¬²¢·µ»Ø³¤¶È
+                 * CUdpClient - æ¥æ”¶æ•°æ®ï¼Œå¹¶è¿”å›é•¿åº¦
                  * DESCRIPTION: - 
-                 *    ½ÓÊÕÊı¾İ£¬·µ»ØÊı¾İµÄ³¤¶È 
-                 * Input: obuf:½ÓÊÕÊı¾İ´æ·Å;  obuflen:obufµÄ×î´ó³¤¶È
+                 *    æ¥æ”¶æ•°æ®ï¼Œè¿”å›æ•°æ®çš„é•¿åº¦ 
+                 * Input: obuf:æ¥æ”¶æ•°æ®å­˜æ”¾;  obuflen:obufçš„æœ€å¤§é•¿åº¦
                  * Output: 
-                 * Returns: ·µ»ØÊµ¼Ê½ÓÊÕbufµÄ³¤¶È
+                 * Returns: è¿”å›å®é™…æ¥æ”¶bufçš„é•¿åº¦
                  * 
                  * modification history
                  * --------------------

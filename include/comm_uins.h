@@ -20,13 +20,13 @@ namespace comm
             int SetUinFile(const char* uinfile);
             inline int SetUinFile(string& uinfile){return SetUinFile(uinfile.c_str());}
             
-            //´ÓÎÄ¼ş<Ã¿ĞĞÒ»¸öuin>ÖĞ»ñÈ¡Uin,²¢¶Ôuin½øĞĞÓĞĞ§ĞÔÅĞ¶Ï
-            //·µ»ØRTN_ERROR£¬±íÊ¾ÎÄ¼şÊı¾İ¶ÁÍê£¬ÎŞÊı¾İ
-            //·µ»ØRTN_SUCCESS,±íÊ¾¶ÁÈ¡³É¹¦
+            //ä»æ–‡ä»¶<æ¯è¡Œä¸€ä¸ªuin>ä¸­è·å–Uin,å¹¶å¯¹uinè¿›è¡Œæœ‰æ•ˆæ€§åˆ¤æ–­
+            //è¿”å›RTN_ERRORï¼Œè¡¨ç¤ºæ–‡ä»¶æ•°æ®è¯»å®Œï¼Œæ— æ•°æ®
+            //è¿”å›RTN_SUCCESS,è¡¨ç¤ºè¯»å–æˆåŠŸ
             bool GetNextUin(unsigned &uin);
             
-            //·µ»ØRTN_ERROR£¬±íÊ¾ÎÄ¼şÊı¾İ¶ÁÍê,ÎŞÊı¾İ
-            //·µ»ØRTN_SUCCESS,±íÊ¾¶ÁÈ¡³É¹¦
+            //è¿”å›RTN_ERRORï¼Œè¡¨ç¤ºæ–‡ä»¶æ•°æ®è¯»å®Œ,æ— æ•°æ®
+            //è¿”å›RTN_SUCCESS,è¡¨ç¤ºè¯»å–æˆåŠŸ
             bool BatchGetUins(set<unsigned>& sets, const unsigned needcnt);
         protected:
             string m_uinfile;

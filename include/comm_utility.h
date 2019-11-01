@@ -84,32 +84,32 @@ template<typename T>
 std::string ListToString(const T& ctr);
 
 /// <summary>
-/// ·Ö¸î×Ö·û´®£¬sourceÖĞ³öÏÖµÄÔÚdelimÖĞÈÎºÎ×Ö·û£¬¾ù×÷Îª·Ö¸î·û
+/// åˆ†å‰²å­—ç¬¦ä¸²ï¼Œsourceä¸­å‡ºç°çš„åœ¨delimä¸­ä»»ä½•å­—ç¬¦ï¼Œå‡ä½œä¸ºåˆ†å‰²ç¬¦
 /// </summary>
-/// <param name="Container">ÈİÆ÷£¬Í¨³£ÎªstlÖĞset»òvector</param>
-/// <param name="source">±»·Ö¸îµÄ×Ö·û´®</param>
-/// <param name="delim">·Ö¸î×Ö·û</param>
-/// <param name="container">½á¹û</param>
+/// <param name="Container">å®¹å™¨ï¼Œé€šå¸¸ä¸ºstlä¸­setæˆ–vector</param>
+/// <param name="source">è¢«åˆ†å‰²çš„å­—ç¬¦ä¸²</param>
+/// <param name="delim">åˆ†å‰²å­—ç¬¦</param>
+/// <param name="container">ç»“æœ</param>
 /// <returns></returns>
 template<typename Container>
 void Split(const std::string& source, const char *delim, Container& out_result);
 /// <summary>
-/// ·Ö¸î×Ö·û´®£¬sourceÖĞ³öÏÖµÄÔÚdelimÖĞÈÎºÎ×Ö·û£¬¾ù×÷Îª·Ö¸î·û
-/// ²¢¶ÔÃ¿¸ö·Ö¸îºóµÄ×Ö·û´®£¬½øĞĞOperator´¦Àíºó£¬·ÅÈëContainerÖĞ
+/// åˆ†å‰²å­—ç¬¦ä¸²ï¼Œsourceä¸­å‡ºç°çš„åœ¨delimä¸­ä»»ä½•å­—ç¬¦ï¼Œå‡ä½œä¸ºåˆ†å‰²ç¬¦
+/// å¹¶å¯¹æ¯ä¸ªåˆ†å‰²åçš„å­—ç¬¦ä¸²ï¼Œè¿›è¡ŒOperatorå¤„ç†åï¼Œæ”¾å…¥Containerä¸­
 /// </summary>
-/// <param name="Container">ÈİÆ÷£¬Í¨³£ÎªstlÖĞset»òvector</param>
-/// <param name="source">±»·Ö¸îµÄ×Ö·û´®</param>
-/// <param name="delim">·Ö¸î×Ö·û</param>
-/// <param name="container">½á¹û</param>
-/// <param name="Operator">¶Ô·Ö¸îºóµÄ×Ö·û´®½øĞĞ×ª»»</param>
+/// <param name="Container">å®¹å™¨ï¼Œé€šå¸¸ä¸ºstlä¸­setæˆ–vector</param>
+/// <param name="source">è¢«åˆ†å‰²çš„å­—ç¬¦ä¸²</param>
+/// <param name="delim">åˆ†å‰²å­—ç¬¦</param>
+/// <param name="container">ç»“æœ</param>
+/// <param name="Operator">å¯¹åˆ†å‰²åçš„å­—ç¬¦ä¸²è¿›è¡Œè½¬æ¢</param>
 /// <returns></returns>
 template<typename Container, typename Operator>
 void Split(const std::string& source, const char *delim, Container& out_result, Operator op);
 /// <summary>
-/// È¡×Ö·û´®Ò»²¿·Ö
+/// å–å­—ç¬¦ä¸²ä¸€éƒ¨åˆ†
 /// </summary>
 /// <param name="b">left seperator</param>
-/// <param name="e">right seperator£¬ 0 for str end</param>
+/// <param name="e">right seperatorï¼Œ 0 for str end</param>
 /// <param name="str"></param>
 /// <param name="ignore_prefix_count">ignore left seperator count</param>
 /// <returns></returns>
@@ -126,7 +126,7 @@ std::string TrimEnd(const std::string& str, char delimit = ' ');
 std::string Trim(const std::string& str, char delimit = ' ');
 
 /// <summary>
-/// »ñÈ¡
+/// è·å–
 /// </summary>
 /// <returns></returns>
 const char* GetTimeStr();
@@ -143,7 +143,7 @@ const char* GetTimeStr(time_t abs_time);
 /// <returns></returns>
 const char* GetFullTimeStr(time_t abs_time);
 /// <summary>
-/// »ñÈ¡±¾»úIP
+/// è·å–æœ¬æœºIP
 /// </summary>
 /// <param name="interface"></param>
 /// <returns></returns>
@@ -170,7 +170,7 @@ std::string Binary2String(const void *buf, int len);
 ///
 
 /// <summary>
-/// »ñÈ¡µ±Ç°³ÌĞòÃû
+/// è·å–å½“å‰ç¨‹åºå
 /// </summary>
 /// <returns></returns>
 std::string GetAppFullPathName();

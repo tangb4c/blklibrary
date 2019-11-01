@@ -27,9 +27,9 @@ namespace comm
 {
     using namespace std;
     /******************************************************************************
-     * CTcpClient - TCPÀà
+     * CTcpClient - TCPç±»
      * DESCRIPTION: - 
-     *    ·â×°TCP²Ù×÷£¬µ±Óöµ½ÍøÂçÁ¬½ÓÊ§°Ü£¬³¬Ê±£¬²ÎÊı´íÎóÊ±£¬½«Å×³öÒì³£ 
+     *    å°è£…TCPæ“ä½œï¼Œå½“é‡åˆ°ç½‘ç»œè¿æ¥å¤±è´¥ï¼Œè¶…æ—¶ï¼Œå‚æ•°é”™è¯¯æ—¶ï¼Œå°†æŠ›å‡ºå¼‚å¸¸ 
      * Input: 
      * Output: 
      * Returns: 
@@ -50,15 +50,15 @@ namespace comm
 			virtual unsigned GetIp();
 			virtual unsigned GetPort();
 			virtual const string& GetIpString();
-            //Èôtimeout_msĞ¡ÓÚµÈÓÚ0,ÔòÎª×èÈûÄ£Ê½
+            //è‹¥timeout_mså°äºç­‰äº0,åˆ™ä¸ºé˜»å¡æ¨¡å¼
 			virtual void SetHost(const string& ip, unsigned port, int timeout_ms = 100)throw(CCommException);
 			virtual int Init()throw(CCommException);
 			virtual void Close();
 			virtual const string& GetHostInfo()const;
             /******************************************************************************
-                 * CTcpClient - ·¢ËÍÊı¾İ
+                 * CTcpClient - å‘é€æ•°æ®
                  * DESCRIPTION: - 
-                 *    ·¢ËÍÊı¾İ 
+                 *    å‘é€æ•°æ® 
                  * Input: 
                  * Output: 
                  * Returns: 
@@ -70,12 +70,12 @@ namespace comm
                  ******************************************************************************/
 			virtual int Send(const void* ibuf, unsigned ibuflen, bool until_succ = false)throw(CCommException);
              /******************************************************************************
-                 * CTcpClient - ½ÓÊÕÊı¾İ£¬²¢·µ»Ø³¤¶È
+                 * CTcpClient - æ¥æ”¶æ•°æ®ï¼Œå¹¶è¿”å›é•¿åº¦
                  * DESCRIPTION: - 
-                 *    ½ÓÊÕÊı¾İ£¬·µ»ØÊı¾İµÄ³¤¶È 
-                 * Input: obuf:½ÓÊÕÊı¾İ´æ·Å;  obuflen:obufµÄ×î´ó³¤¶È
+                 *    æ¥æ”¶æ•°æ®ï¼Œè¿”å›æ•°æ®çš„é•¿åº¦ 
+                 * Input: obuf:æ¥æ”¶æ•°æ®å­˜æ”¾;  obuflen:obufçš„æœ€å¤§é•¿åº¦
                  * Output: 
-                 * Returns: ·µ»ØÊµ¼Ê½ÓÊÕbufµÄ³¤¶È
+                 * Returns: è¿”å›å®é™…æ¥æ”¶bufçš„é•¿åº¦
                  * 
                  * modification history
                  * --------------------
@@ -87,13 +87,13 @@ namespace comm
 			int Recv(void* obuf, unsigned obuflen, T check_packet)throw(CCommException);
 			virtual int SendAndRecv(const void* ibuf, unsigned ibuflen, void* obuf, unsigned obuflen)throw(CCommException);
 			/// <summary>
-			/// ·¢ËÍ²¢½ÓÊÕQzoneĞ­ÒéÍ·µÄÊı¾İ
+			/// å‘é€å¹¶æ¥æ”¶Qzoneåè®®å¤´çš„æ•°æ®
 			/// </summary>
-			/// <param name="ibuf">·¢ËÍÊı¾İbuffer</param>
-			/// <param name="ibuflen">·¢ËÍÊı¾İ³¤¶È</param>
-			/// <param name="obuf">½ÓÊÕÊı¾İbuffer</param>
-			/// <param name="obuflen">½ÓÊÕÊı¾İbuffer×î´ó³¤¶È</param>
-			/// <returns>Êµ¼Ê½ÓÊÕµÄ³¤¶È</returns>
+			/// <param name="ibuf">å‘é€æ•°æ®buffer</param>
+			/// <param name="ibuflen">å‘é€æ•°æ®é•¿åº¦</param>
+			/// <param name="obuf">æ¥æ”¶æ•°æ®buffer</param>
+			/// <param name="obuflen">æ¥æ”¶æ•°æ®bufferæœ€å¤§é•¿åº¦</param>
+			/// <returns>å®é™…æ¥æ”¶çš„é•¿åº¦</returns>
 			virtual int SendAndRecvQzoneProtocol(const void* ibuf, unsigned ibuflen, void* obuf, unsigned obuflen)throw(CCommException);
 			virtual int SendAndRecvQzaProtocol(const void* ibuf, unsigned ibuflen, void* obuf, unsigned obuflen)throw(CCommException);
 		protected:

@@ -72,7 +72,7 @@ inline std::string Trim(const std::string& str, char delimit)
    return str.substr(_bpos, str.find_last_not_of(delimit) - _bpos + 1);
 }
 template<typename T, size_t N>
-inline size_t SizeOf(const T(&)[N]){return N;}//ÀûÓÃ±àÒëÆ÷µÃÖªÊı×é´óĞ¡
+inline size_t SizeOf(const T(&)[N]){return N;}//åˆ©ç”¨ç¼–è¯‘å™¨å¾—çŸ¥æ•°ç»„å¤§å°
 
 template<typename T, size_t N>
 inline T* EndOf(T (&arr)[N]){return arr + N;}

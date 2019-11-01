@@ -8,8 +8,8 @@
 using namespace std;
 namespace comm
 {
-    //ÒÔÏÂËùÓĞ½Ó¿Ú£¬³ö´í¾ùÅ×³öÒì³£
-	//Ö§³ÖµÄ¸ñÊ½ 
+    //ä»¥ä¸‹æ‰€æœ‰æ¥å£ï¼Œå‡ºé”™å‡æŠ›å‡ºå¼‚å¸¸
+	//æ”¯æŒçš„æ ¼å¼ 
 	//[comm]
 	//count = 0
     class CConfigHelper: public CCommBase, public CConfigDocument
@@ -19,17 +19,17 @@ namespace comm
         
         public:
 			bool ExistItem(const char* prefix)throw(CCommException);
-            /*ÄÜ½âÎöµÄ¸ñÊ½:
-            * server_1=10.128.0.44:8839  ¶ÔÓ¦²ÎÊı:prefix = server_  posindex=1   
+            /*èƒ½è§£æçš„æ ¼å¼:
+            * server_1=10.128.0.44:8839  å¯¹åº”å‚æ•°:prefix = server_  posindex=1   
             */
             void GetIPandPort(const char* prefix, int posindex, std::string& out_ip, unsigned& port, char delimiter = ':')throw(CCommException);       
-            /*ÄÜ½âÎöµÄ¸ñÊ½:
-            * ip_2 = 10.128.0.44    ¶ÔÓ¦²ÎÊı:prefix = ip_  posindex=2
+            /*èƒ½è§£æçš„æ ¼å¼:
+            * ip_2 = 10.128.0.44    å¯¹åº”å‚æ•°:prefix = ip_  posindex=2
             */
             std::string& GetString(const char* prefix, int posindex)throw(CCommException);
             std::string& GetString(const char * prefix)throw(CCommException);
-            /*ÄÜ½âÎöµÄ¸ñÊ½:
-            * port_4 = 8201  ¶ÔÓ¦²ÎÊı:prefix = port_  posindex=4
+            /*èƒ½è§£æçš„æ ¼å¼:
+            * port_4 = 8201  å¯¹åº”å‚æ•°:prefix = port_  posindex=4
             */
             int GetInt(const char* prefix, int posindex)throw(CCommException);
 
@@ -55,9 +55,9 @@ namespace comm
 			T Get(const char* prefix, int posindex)throw(CCommException);
 			template<typename T> 
 			T Get(const char* prefix)throw(CCommException);
-            /*ÄÜ½âÎöµÄ¸ñÊ½ 
-            * ttc.uinrang_1 = 82-84  ¶ÔÓ¦²ÎÊı£ºprefix ttc.uinrang_1
-            * Container½öÖ§³Övector,set
+            /*èƒ½è§£æçš„æ ¼å¼ 
+            * ttc.uinrang_1 = 82-84  å¯¹åº”å‚æ•°ï¼šprefix ttc.uinrang_1
+            * Containerä»…æ”¯æŒvector,set
             */ 
             template<typename Container>
             void SplitInt(const char* prefix, Container& out_sp)throw(CCommException);

@@ -22,27 +22,27 @@ namespace comm
     {
         public:
             /// <summary>
-            /// °üÌå´æÔÚ´íÎó£¬·µ»ØRTN_ERROR
+            /// åŒ…ä½“å­˜åœ¨é”™è¯¯ï¼Œè¿”å›RTN_ERROR
             /// </summary>
             /// <param name="qza_packet"></param>
             /// <param name="len"></param>
             /// <returns></returns>
             int CheckPacket(const void *qza_packet, int len)throw();
             /// <summary>
-            /// Èô°üÌå´æÔÚ´íÎó£¬·µ»ØRTN_ERROR
-			/// Èô½öÁ÷Ë®ºÅ²»Æ¥Åä£¬·µ»ØRTN_WARN
+            /// è‹¥åŒ…ä½“å­˜åœ¨é”™è¯¯ï¼Œè¿”å›RTN_ERROR
+			/// è‹¥ä»…æµæ°´å·ä¸åŒ¹é…ï¼Œè¿”å›RTN_WARN
             /// </summary>
             /// <param name="qza_packet"></param>
             /// <param name="len"></param>
-            /// <param name="flow">ÈôflowÎª0, Ôò²»¼ì²éÁ÷Ë®ºÅÊÇ·ñÒ»ÖÂ</param>
+            /// <param name="flow">è‹¥flowä¸º0, åˆ™ä¸æ£€æŸ¥æµæ°´å·æ˜¯å¦ä¸€è‡´</param>
             /// <returns></returns>
             int CheckPacket(const void *qza_packet, int len, unsigned flow)throw();
 			/// <summary>
-			/// ÓÃÓÚS++ÖĞHandleInput£¬±¾·½·¨µÄ·µ»ØÖµ¿ÉÖ±½Ó·µ»Ø¸øSPP,¿ÉÓÃÓÚTCP/UDP
+			/// ç”¨äºS++ä¸­HandleInputï¼Œæœ¬æ–¹æ³•çš„è¿”å›å€¼å¯ç›´æ¥è¿”å›ç»™SPP,å¯ç”¨äºTCP/UDP
 			/// </summary>
 			/// <param name="qza_packet"></param>
 			/// <param name="len"></param>
-			/// <returns>·µ»Ø0,±íÊ¾¼ÌĞø½ÓÊÕ£¬·µ»Ø¸ºÊı£¬±íÊ¾·¢Éú´íÎó£¬ ·µ»ØÕıÊı£¬±íÊ¾°üµÄ³¤¶È¡£</returns>
+			/// <returns>è¿”å›0,è¡¨ç¤ºç»§ç»­æ¥æ”¶ï¼Œè¿”å›è´Ÿæ•°ï¼Œè¡¨ç¤ºå‘ç”Ÿé”™è¯¯ï¼Œ è¿”å›æ­£æ•°ï¼Œè¡¨ç¤ºåŒ…çš„é•¿åº¦ã€‚</returns>
 			 int CheckPacketAtSpp(const void *qza_packet, int len)throw();
         public:
             //void SetParseBuffer(void *buf, int buf_len){m_qzone = (QzoneProtocolPtr)buf; m_qzone_len = buf_len;}

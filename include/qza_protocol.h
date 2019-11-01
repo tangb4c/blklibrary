@@ -20,33 +20,33 @@ using namespace std;
 #undef GW_PROTOCOL_STX
 #define GW_PROTOCOL_STX		0x8a
 
-typedef struct DETAILINFOtag			/* ½á¹¹Ìå´óĞ¡: 95×Ö½Ú*/
+typedef struct DETAILINFOtag			/* ç»“æ„ä½“å¤§å°: 95å­—èŠ‚*/
 {
-	char			_version;			//°æ±¾ºÅ
+	char			_version;			//ç‰ˆæœ¬å·
 	
-	unsigned char	_type_platform;		//Æ½Ì¨ÀàĞÍ	Æ½Ì¨»áÕë¶ÔÓÚ´Ë×Ö¶ÎÍ³¼Æ
-	unsigned int	_type_app;			//Ó¦ÓÃÀàĞÍ	Æ½Ì¨»áÕë¶ÔÓÚ´Ë×Ö¶ÎÍ³¼Æ
-	unsigned int	_type_source;		//¾ßÌåÀ´Ô´ÀàĞÍ, ÀıÈç²Ù×÷´¥·¢µØ. ´Ë×Ö¶ÎÓÉÒµÎñ×Ô¼º¿ØÖÆ, Æ½Ì¨²»µ¥¶ÀÕë¶ÔÓÚ´Ë×Ö¶ÎÍ³¼Æ
+	unsigned char	_type_platform;		//å¹³å°ç±»å‹	å¹³å°ä¼šé’ˆå¯¹äºæ­¤å­—æ®µç»Ÿè®¡
+	unsigned int	_type_app;			//åº”ç”¨ç±»å‹	å¹³å°ä¼šé’ˆå¯¹äºæ­¤å­—æ®µç»Ÿè®¡
+	unsigned int	_type_source;		//å…·ä½“æ¥æºç±»å‹, ä¾‹å¦‚æ“ä½œè§¦å‘åœ°. æ­¤å­—æ®µç”±ä¸šåŠ¡è‡ªå·±æ§åˆ¶, å¹³å°ä¸å•ç‹¬é’ˆå¯¹äºæ­¤å­—æ®µç»Ÿè®¡
 
-	char			_reserve_buf[23];	//±£Áô×Ö¶Î
+	char			_reserve_buf[23];	//ä¿ç•™å­—æ®µ
 	
-	unsigned		_req_ip;			//ÒµÎñÇëÇóµÄIP
-	unsigned 		_ptlogin_id;		//ÒµÎñÑéÖ¤µÇÂ½Ì¬µÄid
-	unsigned char	_auth_type;			//ÒµÎñµÇÂ½Ì¬keyĞ£ÑéµÄÀàĞÍ
+	unsigned		_req_ip;			//ä¸šåŠ¡è¯·æ±‚çš„IP
+	unsigned 		_ptlogin_id;		//ä¸šåŠ¡éªŒè¯ç™»é™†æ€çš„id
+	unsigned char	_auth_type;			//ä¸šåŠ¡ç™»é™†æ€keyæ ¡éªŒçš„ç±»å‹
 	
-	char			_reserve_buf2[9];	//±£Áô×Ö¶Î2
+	char			_reserve_buf2[9];	//ä¿ç•™å­—æ®µ2
 	
-	unsigned short	_ptlogin_state;		//µÇÂ½×´Ì¬ 0xffff-Î´ÑéÖ¤, 0-³É¹¦ 1-Ê§°Ü
+	unsigned short	_ptlogin_state;		//ç™»é™†çŠ¶æ€ 0xffff-æœªéªŒè¯, 0-æˆåŠŸ 1-å¤±è´¥
 	
-	short			_req_cmd_item;		//ÒµÎñÇëÇóµÄ×ÓÃüÁî×Ö
+	short			_req_cmd_item;		//ä¸šåŠ¡è¯·æ±‚çš„å­å‘½ä»¤å­—
 	
-	unsigned		_client_ip;			//·ÃÎÊÕßµÄ¿Í»§¶ËIP
-	unsigned		_host_uin;			//±»·ÃÎÊÕßµÄUIN
-	unsigned		_client_uin;		//·ÃÎÊÕßµÄUIN
+	unsigned		_client_ip;			//è®¿é—®è€…çš„å®¢æˆ·ç«¯IP
+	unsigned		_host_uin;			//è¢«è®¿é—®è€…çš„UIN
+	unsigned		_client_uin;		//è®¿é—®è€…çš„UIN
 	
-	char			_extend[25];		//À©Õ¹Êı¾İ	Í¨¹ıskeyĞ£ÑéµÇÂ½Ì¬µÄµØ·½»áÊ¹ÓÃÕâÀïµÄÇ°11¸ö×Ö½Ú´æ´¢skeyÏà¹ØĞÅÏ¢
-	unsigned short	_pack_len_high;		//°ü³¤¸ßÎ» Õû¸ö°ü³¤¶È==_pack_len + 65536 * _detail_info._pack_len_high;
-	unsigned char	_extend_len;		//±ä³¤¸½¼ÓĞÅÏ¢³¤¶È
+	char			_extend[25];		//æ‰©å±•æ•°æ®	é€šè¿‡skeyæ ¡éªŒç™»é™†æ€çš„åœ°æ–¹ä¼šä½¿ç”¨è¿™é‡Œçš„å‰11ä¸ªå­—èŠ‚å­˜å‚¨skeyç›¸å…³ä¿¡æ¯
+	unsigned short	_pack_len_high;		//åŒ…é•¿é«˜ä½ æ•´ä¸ªåŒ…é•¿åº¦==_pack_len + 65536 * _detail_info._pack_len_high;
+	unsigned char	_extend_len;		//å˜é•¿é™„åŠ ä¿¡æ¯é•¿åº¦
 	
 	DETAILINFOtag()
 	{
@@ -84,14 +84,14 @@ typedef struct DETAILINFOtag			/* ½á¹¹Ìå´óĞ¡: 95×Ö½Ú*/
 	
 }DETAILINFO;
 
-typedef struct QZAHEADtag			/* ½á¹¹Ìå´óĞ¡: 106×Ö½Ú*/
+typedef struct QZAHEADtag			/* ç»“æ„ä½“å¤§å°: 106å­—èŠ‚*/
 {
-	char			_version;				//°æ±¾ºÅ
-	unsigned		_pack_flow;				//Á÷Ë®ºÅ
-	unsigned short	_pack_len;				//Õû¸ö°ü³¤¶ÈµÄµÍÎ» Õû¸ö°ü³¤¶È==_pack_len + 65536 * _detail_info._pack_len_high;
-	short			_req_cmd;				//ÇëÇóµÄÃüÁî×Ö
-	short			_rsp_code;				//·µ»ØÂë
-	DETAILINFO		_detail_info;				//ÇëÇóÏêÏ¸
+	char			_version;				//ç‰ˆæœ¬å·
+	unsigned		_pack_flow;				//æµæ°´å·
+	unsigned short	_pack_len;				//æ•´ä¸ªåŒ…é•¿åº¦çš„ä½ä½ æ•´ä¸ªåŒ…é•¿åº¦==_pack_len + 65536 * _detail_info._pack_len_high;
+	short			_req_cmd;				//è¯·æ±‚çš„å‘½ä»¤å­—
+	short			_rsp_code;				//è¿”å›ç 
+	DETAILINFO		_detail_info;				//è¯·æ±‚è¯¦ç»†
 	
 	QZAHEADtag()
 	{
@@ -112,9 +112,9 @@ typedef struct QZAHEADtag			/* ½á¹¹Ìå´óĞ¡: 106×Ö½Ú*/
 	char GetVersion() {return _version;};
 
 /*
-	type_platform;		//Æ½Ì¨ÀàĞÍ	Æ½Ì¨»áÕë¶ÔÓÚ´Ë×Ö¶ÎÍ³¼Æ
-	type_app;			//Ó¦ÓÃÀàĞÍ	Æ½Ì¨»áÕë¶ÔÓÚ´Ë×Ö¶ÎÍ³¼Æ
-	type_source;		//¾ßÌåÀ´Ô´ÀàĞÍ, ÀıÈç²Ù×÷´¥·¢µØ. ´Ë×Ö¶ÎÓÉÒµÎñ×Ô¼º¿ØÖÆ, Æ½Ì¨²»µ¥¶ÀÕë¶ÔÓÚ´Ë×Ö¶ÎÍ³¼Æ
+	type_platform;		//å¹³å°ç±»å‹	å¹³å°ä¼šé’ˆå¯¹äºæ­¤å­—æ®µç»Ÿè®¡
+	type_app;			//åº”ç”¨ç±»å‹	å¹³å°ä¼šé’ˆå¯¹äºæ­¤å­—æ®µç»Ÿè®¡
+	type_source;		//å…·ä½“æ¥æºç±»å‹, ä¾‹å¦‚æ“ä½œè§¦å‘åœ°. æ­¤å­—æ®µç”±ä¸šåŠ¡è‡ªå·±æ§åˆ¶, å¹³å°ä¸å•ç‹¬é’ˆå¯¹äºæ­¤å­—æ®µç»Ÿè®¡
 */
 	void SetReqSource(unsigned char type_platform, unsigned int type_app, unsigned int type_source)
 	{
@@ -192,7 +192,7 @@ typedef struct QZAHEADtag			/* ½á¹¹Ìå´óĞ¡: 106×Ö½Ú*/
 	
 
 	/**
-	 * ÉèÖÃ_detail_info._extendÖĞµÄkey, key×î³¤²»ÄÜ³¬¹ıExtendSize()
+	 * è®¾ç½®_detail_info._extendä¸­çš„key, keyæœ€é•¿ä¸èƒ½è¶…è¿‡ExtendSize()
 	 */
 	int SetInternalKey(const string& key)
 	{
@@ -206,7 +206,7 @@ typedef struct QZAHEADtag			/* ½á¹¹Ìå´óĞ¡: 106×Ö½Ú*/
 		return 0;
 	};
 	/**
-	 * È¡_detail_info._extendÖĞµÄkey
+	 * å–_detail_info._extendä¸­çš„key
 	 */
 	string GetInternalKey()
 	{
@@ -220,7 +220,7 @@ typedef struct QZAHEADtag			/* ½á¹¹Ìå´óĞ¡: 106×Ö½Ú*/
 	};
 
 	/**
-	 * ÉèÖÃ±ä³¤°üÍ·ÖĞµÄkey, key×î³¤²»ÄÜ³¬¹ı254
+	 * è®¾ç½®å˜é•¿åŒ…å¤´ä¸­çš„key, keyæœ€é•¿ä¸èƒ½è¶…è¿‡254
 	 */
 	int SetExternalKey(const string& key)
 	{
@@ -242,7 +242,7 @@ typedef struct QZAHEADtag			/* ½á¹¹Ìå´óĞ¡: 106×Ö½Ú*/
 		return 0;
 	};
 	/**
-	 * È¡±ä³¤°üÍ·ÖĞµÄkey
+	 * å–å˜é•¿åŒ…å¤´ä¸­çš„key
 	 */
 	string GetExternalKey()
 	{
@@ -256,22 +256,22 @@ typedef struct QZAHEADtag			/* ½á¹¹Ìå´óĞ¡: 106×Ö½Ú*/
 	};
 
 	/**
-	 * ÒÔÏÂ¸÷×Ö¶ÎÎ»ÖÃ´æÔÚ¸´ÓÃÇé¿ö(Èç¶à¸ökey¶¼ÊÇÓÃµÄÍ¬Ò»Î»ÖÃ, µ«ËüÃÇ²»»áÔÚÍ¬Ò»¸ö°üÍ·ÀïÍ¬Ê±³öÏÖ)
-	 * Çë°´¾ßÌåÇé¿öÑ¡Ôñµ÷ÓÃ(²»ÄÜµ÷¶à´ÎSetInternalKeyµÄ²»Í¬½Ó¿Ú»ò¶à´ÎSetExternalKeyµÄ²»Í¬½Ó¿Ú)
+	 * ä»¥ä¸‹å„å­—æ®µä½ç½®å­˜åœ¨å¤ç”¨æƒ…å†µ(å¦‚å¤šä¸ªkeyéƒ½æ˜¯ç”¨çš„åŒä¸€ä½ç½®, ä½†å®ƒä»¬ä¸ä¼šåœ¨åŒä¸€ä¸ªåŒ…å¤´é‡ŒåŒæ—¶å‡ºç°)
+	 * è¯·æŒ‰å…·ä½“æƒ…å†µé€‰æ‹©è°ƒç”¨(ä¸èƒ½è°ƒå¤šæ¬¡SetInternalKeyçš„ä¸åŒæ¥å£æˆ–å¤šæ¬¡SetExternalKeyçš„ä¸åŒæ¥å£)
 	 */
-	// skey Ò»°ãÎªWEB²ã³ÌĞòµ÷ÓÃ, Èçcgi
+	// skey ä¸€èˆ¬ä¸ºWEBå±‚ç¨‹åºè°ƒç”¨, å¦‚cgi
 	int SetSKey(const string& skey){return SetInternalKey(skey);};
 	string GetSKey(){return GetInternalKey();};
 
-	// svr key Ò»°ãÎªÄÃ²»µ½ÈÎºÎÆäËükeyµÄ³ÌĞòµ÷ÓÃ
+	// svr key ä¸€èˆ¬ä¸ºæ‹¿ä¸åˆ°ä»»ä½•å…¶å®ƒkeyçš„ç¨‹åºè°ƒç”¨
 	int SetSvrKey(const string& skey){return SetInternalKey(skey);};
 	string GetSvrKey(){return GetInternalKey();};
 
-	// 3g key ¸øÊÖ»úÎŞÏßmqzoneÊ¹ÓÃµÄkey
+	// 3g key ç»™æ‰‹æœºæ— çº¿mqzoneä½¿ç”¨çš„key
 	int Set3GKey(const string& a8){	return SetExternalKey(a8);};
 	string Get3GKey(){return GetExternalKey();};
 
-	// ÈõµÇÂ½Ì¬µÄkey
+	// å¼±ç™»é™†æ€çš„key
 	int SetLSKey(const string& lskey){return SetExternalKey(lskey);};
 	string GetLSKey(){return GetExternalKey();};
 	

@@ -21,12 +21,12 @@ namespace comm
 			~CInfo();
         public:
              /******************************************************************************
-                 * CInfo - »ñÈ¡±¾µØIP
+                 * CInfo - è·å–æœ¬åœ°IP
                  * DESCRIPTION: - 
                  *    
-                 * Input: ¶ÔÓ¦ÓÚÍø¿¨µÄinterface,±ÈÈçeth1, eth0
+                 * Input: å¯¹åº”äºç½‘å¡çš„interface,æ¯”å¦‚eth1, eth0
                  * Output: 
-                 * Returns: ·µ»ØÎª¿Õ×Ö·û´®£¬Ôò±íÊ¾Ã»ÓĞ»ñÈ¡µ½
+                 * Returns: è¿”å›ä¸ºç©ºå­—ç¬¦ä¸²ï¼Œåˆ™è¡¨ç¤ºæ²¡æœ‰è·å–åˆ°
                  * 
                  * modification history
                  * --------------------
@@ -35,15 +35,15 @@ namespace comm
                  ******************************************************************************/
             const char* GetLocalIP(const char* interface)throw(CCommException);
 			/// <summary>
-			/// »ñÈ¡±¾µØIP
+			/// è·å–æœ¬åœ°IP
 			/// </summary>
 			/// <param name="interface">such as eth1</param>
-			/// <returns>·µ»ØÊı×Ö</returns>
+			/// <returns>è¿”å›æ•°å­—</returns>
 			unsigned GetLocalAddr(const char* interface) throw(CCommException);
 			/// <summary>
-			/// »ñÈ¡CPUÀûÓÃÂÊ
+			/// è·å–CPUåˆ©ç”¨ç‡
 			/// </summary>
-			/// <param name="stat_interval_msec">Í³¼ÆÊ±¼ä¼ä¸ô</param>
+			/// <param name="stat_interval_msec">ç»Ÿè®¡æ—¶é—´é—´éš”</param>
 			/// <returns>0-100</returns>
 			unsigned GetUtilization(int stat_interval_msec = 500)throw(CCommException);
 		protected:

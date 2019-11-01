@@ -1,31 +1,31 @@
 /*
- * qzone_protocol.h : QzoneЭ��ͳһ�ӿ�
+ * qzone_protocol.h : Qzone协议统一接口
  * 
  *  Copyright (c) Tencent 2007.
  * 
  * History: 
  * 0.06  6--2010, microsun modifyed
-    Note:   1.Ԥ���ֶ�����,���Ӻ���SetReserved()
+    Note:   1.预留字段启用,增加函数SetReserved()
  * 0.04, 9 -- 2008, geminiguan modified
- 	Note:	1.����AppendLongLong��FetchLongLong������������ͽ��longlong������
+ 	Note:	1.增加AppendLongLong和FetchLongLong程序函数，打包和解包longlong型数据
  * 0.09, 10--2007, ianyang modified
- 	Note:	1. ����m_iErrno��Ա������¼���/����Ƿ����, ���ṩ��Ӧ�ӿ�
+ 	Note:	1. 增加m_iErrno成员变量记录打包/解包是否出错, 并提供相应接口
  * 0.07, 31-may-2007, ianyang modified
- 	Note:	1. ����AppendData() & FetchData() ����unsigned ����֧��, ����ǿ��ת��
- 			2. [FIXBUG] �޸�AppendData() & FetchData() ��DataLenΪunsigned
+ 	Note:	1. 对于AppendData() & FetchData() 完善unsigned 类型支持, 无须强制转换
+ 			2. [FIXBUG] 修改AppendData() & FetchData() 的DataLen为unsigned
  * 0.05, 28-may-2007, ianyang modified
-	Note:	1. ��������packet�ӿ�, �ṩȫ�ں�ʽ�ӿ�	
-			2. �ṩMapPacketBuffer() & UnmapPacketBuffer()��Ϊӳ�����ݰ�buffer�Ľӿ�
-			3. �ṩӳ��Э��ͷbuffer��ȡЭ��ͷ��Ϣ�Ľӿ�
-			4. �޸�FetchData(), ����memcpy��������
-			5. �޸�Input() & Output(), �������ظ����÷���
-			6. ����QzoneServerResponse����QzoneClient��ʾЭ��Ϊ�ͻ�������, ����Э������
+	Note:	1. 重新整理packet接口, 提供全黑盒式接口	
+			2. 提供MapPacketBuffer() & UnmapPacketBuffer()作为映射数据包buffer的接口
+			3. 提供映射协议头buffer获取协议头信息的接口
+			4. 修改FetchData(), 改用memcpy传出数据
+			5. 修改Input() & Output(), 避免多次重复调用风险
+			6. 对于QzoneServerResponse增加QzoneClient标示协议为客户端请求, 区分协议类型
  * 0.03, 16-may-2007, ianyang modified
-	Note: 	1. ȥ��client��Ϣ, ����Ⱦɫ��Ϣ
- 			2. ȥ���ְ���Ϣ, ��ϵͳ�����Ա��֤��ʹ��UDP��ʹ�÷ְ����
- 			3. ���ǵ�64λ��32λ��������, �޸�����ulongΪuint
- 			4. ȥ���ض�����Ϣ, �Ƿ��ض���ϲ���serverResponseFlag, ������ض���ip,port�����Э������
- 			5. ��������CQzonePacket�ӿ�
+	Note: 	1. 去除client信息, 增加染色信息
+ 			2. 去除分包信息, 由系统设计人员保证若使用UDP则不使用分包设计
+ 			3. 考虑到64位和32位机器兼容, 修改所有ulong为uint
+ 			4. 去除重定向信息, 是否重定向合并到serverResponseFlag, 具体的重定向ip,port存放在协议体中
+ 			5. 增加类似CQzonePacket接口
  * 0.01, 15-may-2007, ianyang create
  * 
  */
@@ -60,18 +60,18 @@ using namespace std;
 
 // -----------------------------------------------------------------------------
 //
-// server response ����
+// server response 定义
 //
 // -----------------------------------------------------------------------------
 typedef enum
 {
-	QzoneServerSucc = 0,	// 0 - [��������, �����ɹ�]
-	QzoneServerFailed = 1,	// 1 - [��������, ����ʧ��]
-	QzoneServerExc = 2,		// 2 - [�쳣����, �������ܾ�����]
-	QzoneServerBusy = 3,	// 3 - [��������, ������æ, ������]	
-	QzoneServerRedirected = 10,	// 10 - [�������ض���]
-	QzoneServerAck = 20,	// 20 - [��ִ��]
-	QzoneClient = 100,		// 100 - [client����, ��server��Ӧ]
+	QzoneServerSucc = 0,	// 0 - [正常数据, 处理成功]
+	QzoneServerFailed = 1,	// 1 - [正常数据, 处理失败]
+	QzoneServerExc = 2,		// 2 - [异常数据, 服务器拒绝处理]
+	QzoneServerBusy = 3,	// 3 - [正常数据, 服务器忙, 可重试]	
+	QzoneServerRedirected = 10,	// 10 - [服务器重定向]
+	QzoneServerAck = 20,	// 20 - [回执包]
+	QzoneClient = 100,		// 100 - [client请求, 非server回应]
 }QzoneServerResponse;
 
 #define DefaultServResInfo 0
@@ -81,9 +81,9 @@ typedef enum
 /*
  * protocol head
  ------------------------------------------------------------------------------------------------------------
-| �汾(1byte) | ������(4 bytes) | Ч���(2 bytes) | ���к�(4 bytes) | ���к�(4 bytes) | Ⱦɫ��Ϣ(4 bytes) | 
+| 版本(1byte) | 命令字(4 bytes) | 效验和(2 bytes) | 序列号(4 bytes) | 序列号(4 bytes) | 染色信息(4 bytes) | 
  ------------------------------------------------------------------------------------------------------------
-| server��Ӧ��ʶ(1 byte) | server��Ӧ��Ϣ(2 bytes) | Э���ܳ���(4bytes) | Э����|
+| server回应标识(1 byte) | server回应信息(2 bytes) | 协议总长度(4bytes) | 协议体|
 ----------------------------------------------------------------------------------------
  */ 
 #pragma pack(1)
@@ -93,34 +93,34 @@ typedef struct _QzoneProtocolHead_
 	unsigned int cmd;
 	unsigned short checksum;
 	
-	unsigned int serialNo;				// 4 bytes, Protocol Serial Number, ��client����,clientЧ��	
-	unsigned int colorration;			// 4 bytes, Ⱦɫ��Ϣ	
-	unsigned char serverResponseFlag;	// 1 byte, Server�˻�Ӧ��ʶ : 
-										/* 	0 - [��������, �����ɹ�], 
-											1 - [��������, ����ʧ��]
-											2 - [�쳣����, �������ܾ�����]
-											3 - [��������, ������æ, ������]											
-											10 - [�������ض���]
-											20 - [��ִ��],
-											100 - [client����, ��server��Ӧ]
+	unsigned int serialNo;				// 4 bytes, Protocol Serial Number, 由client生成,client效验	
+	unsigned int colorration;			// 4 bytes, 染色信息	
+	unsigned char serverResponseFlag;	// 1 byte, Server端回应标识 : 
+										/* 	0 - [正常数据, 处理成功], 
+											1 - [正常数据, 处理失败]
+											2 - [异常数据, 服务器拒绝处理]
+											3 - [正常数据, 服务器忙, 可重试]											
+											10 - [服务器重定向]
+											20 - [回执包],
+											100 - [client请求, 非server回应]
 										*/
-	unsigned short serverResponseInfo;	// 2 bytes, Server�˻�Ӧ������Ϣ 
-										/*	���ڴ���ʧ��(1):  ��ʾ����ʧ�ܵĴ����errcode
-											���ڷ�����æ(3):  ��ʾ����ʱ��(�����ֽ���)
-											���ڷ������ܾ�����(2): ��ʾ�ܾ�ԭ��(�����ֽ���)
-											����, �������ܾ�����ԭ��������:
-											ʹ�õ�ÿbit��ʾ��ͬ�ľܾ�����, �ɵ�λ�ֽ����߷ֱ���Ϊ:		
-												0x1: ��ǰЭ��汾
-												0x2: ��ǰЭ��������
-												0x4: ��ǰclient����
-												0x8: ��ǰclient�汾
-												0x10: ��ǰclient��ϵͳ
-												��Ӧ��λ��1��ʾ�ܾ�, ��0��ʾ���ܾ�, ��5λȫΪ0��ʾ�����ɾܾ�.
-											����, �������ܾ���ǰclient���͵ĵ�ǰclient�汾, ��ServerResponseInfo��ȡֵΪ0x12.
+	unsigned short serverResponseInfo;	// 2 bytes, Server端回应附加信息 
+										/*	对于处理失败(1):  表示处理失败的错误号errcode
+											对于服务器忙(3):  表示重试时间(网络字节序)
+											对于服务器拒绝服务(2): 表示拒绝原因(网络字节序)
+											其中, 服务器拒绝服务原因定义如下:
+											使用的每bit表示不同的拒绝理由, 由低位字节至高分别定义为:		
+												0x1: 当前协议版本
+												0x2: 当前协议命令字
+												0x4: 当前client类型
+												0x8: 当前client版本
+												0x10: 当前client子系统
+												相应的位置1表示拒绝, 置0表示不拒绝, 如5位全为0表示无理由拒绝.
+											例如, 服务器拒绝当前client类型的当前client版本, 则ServerResponseInfo的取值为0x12.
 										*/
-	char reserved[1];					// Ԥ��
+	char reserved[1];					// 预留
 	
-	unsigned int len;					// Э���ܳ���
+	unsigned int len;					// 协议总长度
 	
 	_QzoneProtocolHead_()
 	{
@@ -174,8 +174,8 @@ typedef struct _QzoneProtocolHead_
 	}
 
 	/*
-	@brief:	����Э��ͷ������Ϣ
-	@param:	�汾, ������
+	@brief:	设置协议头基本信息
+	@param:	版本, 命令字
 	*/
 	inline void SetHead(unsigned char version_, unsigned int cmd_)
 	{
@@ -185,8 +185,8 @@ typedef struct _QzoneProtocolHead_
 	}
 
 	/*
-	@brief:	����Э��ͷ���к�
-	@param:	���к�
+	@brief:	设置协议头序列号
+	@param:	序列号
 	*/
 	inline void SetSerialNo(unsigned int serialNo_)
 	{
@@ -195,8 +195,8 @@ typedef struct _QzoneProtocolHead_
 	}	
 
 	/*
-	@brief:	����Ⱦɫ��Ϣ
-	@param:	Ⱦɫ��Ϣ
+	@brief:	设置染色信息
+	@param:	染色信息
 	*/
 	inline void SetColorration(unsigned int colorration_)
 	{
@@ -205,8 +205,8 @@ typedef struct _QzoneProtocolHead_
 	}
 
 	/*
-	@brief:	Server����Ӧ����
-	@param:	��Ӧ��ʶ, ��Ӧ��Ϣ
+	@brief:	Server设置应答结果
+	@param:	回应标识, 回应信息
 	*/
 	inline void SetServerResponse(QzoneServerResponse serverResponseFlag_, unsigned short serverResponseInfo_)
 	{
@@ -216,8 +216,8 @@ typedef struct _QzoneProtocolHead_
 	}
 
 	/*
-	@brief:	����Э�鳤��
-	@param:	Э�鳤��(���ĳ���)
+	@brief:	设置协议长度
+	@param:	协议长度(包的长度)
 	*/
 	inline void SetLen(unsigned int len_)
 	{
@@ -226,8 +226,8 @@ typedef struct _QzoneProtocolHead_
 	}
 	
 	/*
-	@brief:	����Ԥ���ֶ�
-	@param:	Ԥ���ֶ�����
+	@brief:	设置预留字段
+	@param:	预留字段内容
 	*/	
 	inline void SetReserved(unsigned char reserved_)
 	{
@@ -236,8 +236,8 @@ typedef struct _QzoneProtocolHead_
 	}	
 
 	/*
-	@brief:	Ч���
-	@param:	Э��ͷ+Э�����sendbuf, sendbuf����
+	@brief:	效验合
+	@param:	协议头+协议体的sendbuf, sendbuf长度
 	*/
 	inline unsigned short CheckSum(const void* buf, unsigned int bufLen)
 	{
@@ -267,12 +267,12 @@ typedef struct _QzoneProtocolHead_
 
 // -----------------------------------------------------------------------------
 //
-// Э��ṹ
+// 协议结构
 //
 // -----------------------------------------------------------------------------
 
 /*
- * ���ݰ���ͷβ��ʶ
+ * 数据包的头尾标识
  */
 #define QzoneProtocolSOH			0x04
 #define QzoneProtocolEOT			0x05
@@ -287,7 +287,7 @@ typedef struct
 	char soh;
 	QzoneProtocolHead head;
 	char body[];
-	// ... char eot; ������
+	// ... char eot; 包结束
 }QzoneProtocol, *QzoneProtocolPtr;
 
 #pragma pack()
@@ -296,7 +296,7 @@ typedef struct
 
 // -----------------------------------------------------------------------------
 //
-// qzone protocol packet; �ṩ����CQZonePackage�Ľӿ�
+// qzone protocol packet; 提供类似CQZonePackage的接口
 //
 // -----------------------------------------------------------------------------
 class QzoneProtocolPacket
@@ -336,7 +336,7 @@ public:
 	}
 	
 
-/// ����Э��ͷ��Ϣ�Ľӿ�
+/// 设置协议头信息的接口
 public:
 	inline void SetHead(unsigned char version_, unsigned int cmd_)
 	{		
@@ -376,7 +376,7 @@ public:
 	}	
 	
 
-/// ȡЭ��ͷ��Ϣ�Ľӿ�
+/// 取协议头信息的接口
 public:	
 	inline unsigned char version()
 	{
@@ -407,7 +407,7 @@ public:
 		return m_pPacket->head.len;
 	}
 
-/// ȡЭ�鳤�ȡ�λ����صĽӿ�
+/// 取协议长度、位置相关的接口
 public:
 	inline int bodySize()
 	{
@@ -430,7 +430,7 @@ public:
 		return (sizeof(char) + sizeof(QzoneProtocolHead));
 	}
 	/*
-	@brief: �õ�packet��ָ��, ���Զ�������ⲿ����, �����ʹ��
+	@brief: 得到packet的指针, 可以对其进行外部操作, 请谨慎使用
 	*/
     inline char* packet()
     {
@@ -443,7 +443,7 @@ public:
 	}
 	
 
-/// ӳ��Э��ͷbuffer��ȡЭ��ͷ��Ϣ�Ľӿ�
+/// 映射协议头buffer获取协议头信息的接口
 public:
 	inline int MapPacketHeadBuffer(const char* buf, unsigned int bufLen)
 	{
@@ -498,7 +498,7 @@ public:
 		return m_pPacket->head.reserved[0];
 	}
 
-/// map��Ӧ��packet buffer
+/// map对应的packet buffer
 public:
 	inline int CheckPacketBuffer(const char* buf)
 	{
@@ -527,7 +527,7 @@ public:
 		return ;
 	}
 
-/// ����& �ͷ�& ����packet
+/// 创建& 释放& 重置packet
 public:
 	inline int CreatePacket(unsigned int iBodyMaxLen)
 	{
@@ -605,11 +605,11 @@ public:
 	}
 
 
-/// ���, �����ؽӿ�
+/// 打包, 解包相关接口
 public:
 	/*
-	@brief:	�����ؽӿ�, ������CreatePacket()
-	@param:	packet�ĳ���, �Ƿ���ҪЧ��
+	@brief:	解包相关接口, 必须先CreatePacket()
+	@param:	packet的长度, 是否需要效验
 	*/
 	inline int Input(unsigned int iPacketLen, bool check = true)
 	{
@@ -648,8 +648,8 @@ public:
 		return 0;
 	}
 	/*
-	@brief:	�����ؽӿ�, ���Ƽ�ʹ��, ��Ϊ��Ҫ�ⲿ��֤buffer�Ĵ���
-	@param:	���ݰ�buffer, buffer����, �Ƿ���ҪЧ��
+	@brief:	解包相关接口, 不推荐使用, 因为需要外部保证buffer的存在
+	@param:	数据包buffer, buffer长度, 是否需要效验
 	*/
 	inline int Input(const char* buf, unsigned int bufLen, bool check = true)
 	{
@@ -691,8 +691,8 @@ public:
 	}
 
 	/*
-	@brief:	�����ؽӿ�
-	@param:	�����bufferָ��, buffer�ĳ���, �Ƿ���ҪЧ��
+	@brief:	打包相关接口
+	@param:	打包的buffer指针, buffer的长度, 是否需要效验
 	*/
 	inline int Output(char* &packetBuf, int &packetLen, bool check = true)
 	{
@@ -727,7 +727,7 @@ public:
 		return 0;
 	}
 
-/// ����/ȡ�����ݽӿ�
+/// 设置/取包数据接口
 public:
 	inline bool IsProtocolError()
 	{
@@ -758,7 +758,7 @@ public:
 		m_pPacket->body[m_iPos] = cByteParam;
 		m_iPos += sizeof(char);
 
-		//�����βС�ڵ�ǰλ�ã���������
+		//如果包尾小于当前位置，则做调整
 		if (m_iTail < m_iPos)
 		{
 			m_iTail = m_iPos;
@@ -790,7 +790,7 @@ public:
 		m_pPacket->body[m_iPos] = cByteParam;
 		m_iPos += sizeof(unsigned char);
 
-		//�����βС�ڵ�ǰλ�ã���������
+		//如果包尾小于当前位置，则做调整
 		if (m_iTail < m_iPos)
 		{
 			m_iTail = m_iPos;
@@ -823,7 +823,7 @@ public:
 		memcpy(&m_pPacket->body[m_iPos], &usParam, sizeof(short));
 		m_iPos += sizeof(short);		
 
-		//�����βС�ڵ�ǰλ�ã���������
+		//如果包尾小于当前位置，则做调整
 		if (m_iTail < m_iPos)
 		{
 			m_iTail = m_iPos;
@@ -857,7 +857,7 @@ public:
 		memcpy(&m_pPacket->body[m_iPos], &usParam, sizeof(short));
 		m_iPos += sizeof(unsigned short);		
 
-		//�����βС�ڵ�ǰλ�ã���������
+		//如果包尾小于当前位置，则做调整
 		if (m_iTail < m_iPos)
 		{
 			m_iTail = m_iPos;
@@ -891,7 +891,7 @@ public:
 		memcpy(&m_pPacket->body[m_iPos], &uiParam, sizeof(int));
 		m_iPos += sizeof(int);
 
-		//�����βС�ڵ�ǰλ�ã���������
+		//如果包尾小于当前位置，则做调整
 		if (m_iTail < m_iPos)
 		{
 			m_iTail = m_iPos;
@@ -925,7 +925,7 @@ public:
 		memcpy(&m_pPacket->body[m_iPos], &uiParam, sizeof(int));
 		m_iPos += sizeof(unsigned int);
 
-		//�����βС�ڵ�ǰλ�ã���������
+		//如果包尾小于当前位置，则做调整
 		if (m_iTail < m_iPos)
 		{
 			m_iTail = m_iPos;
@@ -960,7 +960,7 @@ public:
 		memcpy(&m_pPacket->body[m_iPos], &uiParam, sizeof(unsigned long long));
 		m_iPos += sizeof(unsigned long long);
 
-		//�����βС�ڵ�ǰλ�ã���������
+		//如果包尾小于当前位置，则做调整
 		if (m_iTail < m_iPos)
 		{
 			m_iTail = m_iPos;
@@ -998,7 +998,7 @@ public:
 		memcpy(&m_pPacket->body[m_iPos], pData, iLen);
 		m_iPos += iLen;
 
-		//�����βС�ڵ�ǰλ�ã���������
+		//如果包尾小于当前位置，则做调整
 		if (m_iTail < m_iPos)
 		{
 			m_iTail = m_iPos;
@@ -1019,7 +1019,7 @@ public:
 
 		return 0;
 	}
-	/// ���Ƽ�ʹ��
+	/// 不推荐使用
 	inline int FetchDataPos(char *&pData, unsigned int iLen)
 	{
 		if (m_iErrno != 0)
@@ -1046,46 +1046,46 @@ private:
 		return p;
 	}	
 
-/// ȡserverResponse������Ϣ
+/// 取serverResponse错误信息
 public:
 	inline void TranslateServerResponseInfo(char * pInfo, unsigned int iInfoLen)
 	{
 		switch (serverResponseFlag())
 		{										
-			// ��������, �����ɹ�
+			// 正常数据, 处理成功
 			case QzoneServerSucc:
 				snprintf(pInfo, iInfoLen, "SUCCESS.");
 				return ;
 
-			// ��������, ����ʧ��
+			// 正常数据, 处理失败
 			case QzoneServerFailed:
-				// ���ڴ���ʧ��(1):  ��ʾ����ʧ�ܵĴ����errcode
+				// 对于处理失败(1):  表示处理失败的错误号errcode
 				snprintf(pInfo, iInfoLen, "FAILED, ERRCODE=%d.", serverResponseInfo());
 				return ;
 
-			// �쳣����, �������ܾ�����
+			// 异常数据, 服务器拒绝处理
 			case QzoneServerExc:
 				snprintf(pInfo, iInfoLen, "DATA EXC, ERRINFO=%d.", serverResponseInfo());
 				return ;
 
-			// ��������, ������æ, ������
+			// 正常数据, 服务器忙, 可重试
 			case QzoneServerBusy:
-				// ���ڷ�����æ(3):  ��ʾ����ʱ��
+				// 对于服务器忙(3):  表示重试时间
 				snprintf(pInfo, iInfoLen, "SERVER BUSY, RETRYTIME=%d.", serverResponseInfo());
 				return ;
 
-			// �������ض���
+			// 服务器重定向
 			case QzoneServerRedirected:
-				// �������ض���
+				// 服务器重定向
 				snprintf(pInfo, iInfoLen, "SERVER REDIRECTED.");
 				return ;
 
-			// ��ִ��
+			// 回执包
 			case QzoneServerAck:
 				snprintf(pInfo, iInfoLen, "ACK.");
 				return ;
 
-			// client����, ��server��Ӧ
+			// client请求, 非server回应
 			case QzoneClient:
 				snprintf(pInfo, iInfoLen, "CLIENT QUERY.");
 				return ;

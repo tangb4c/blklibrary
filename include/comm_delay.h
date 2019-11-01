@@ -11,7 +11,7 @@ namespace comm
         public:
             CFreqCtl();
         public:
-            //cnt_per_sec:Ã¿ÃëÖ´ĞĞµÄÆµÂÊ
+            //cnt_per_sec:æ¯ç§’æ‰§è¡Œçš„é¢‘ç‡
             void Sleep(int cnt_per_sec);
         protected:
             struct timeval  m_begin_tm;

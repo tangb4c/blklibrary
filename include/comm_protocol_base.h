@@ -1,10 +1,10 @@
 /******************************************************************************
- * comm_protocol_base.h - Ğ­Òé¹«¹²¿â
+ * comm_protocol_base.h - åè®®å…¬å…±åº“
  * 
  * Copyright 2009-2009 Tencent Co.,Ltd.
  * 
  * DESCRIPTION: - 
- *     Ğ­Òé¹«¹²¿â
+ *     åè®®å…¬å…±åº“
  * modification history
  * --------------------
  * 01a, 2009-dec-15, comm written
@@ -28,11 +28,11 @@
 namespace comm
 {
 /// <summary>
-/// ×Ö½Ú¶ÔÆë, ½«bufÖ¸Õë£¬ÒÆ¶¯µ½×Ö½Ú¶ÔÆëµÄÎ»ÖÃ
+/// å­—èŠ‚å¯¹é½, å°†bufæŒ‡é’ˆï¼Œç§»åŠ¨åˆ°å­—èŠ‚å¯¹é½çš„ä½ç½®
 /// </summary>
-/// <param name="align">Òª¶ÔÆëµÄ×Ö½Ú2/4/8/16/...</param>
-/// <param name="buf">Òª¶ÔÆëµÄbufÖ¸Õë£¬Öµ»á±»ĞŞ¸Ä</param>
-/// <param name="left_len">bufÊ£Óà¿Õ¼ä, Öµ»á±»ĞŞ¸Ä</param>
+/// <param name="align">è¦å¯¹é½çš„å­—èŠ‚2/4/8/16/...</param>
+/// <param name="buf">è¦å¯¹é½çš„bufæŒ‡é’ˆï¼Œå€¼ä¼šè¢«ä¿®æ”¹</param>
+/// <param name="left_len">bufå‰©ä½™ç©ºé—´, å€¼ä¼šè¢«ä¿®æ”¹</param>
 /// <returns></returns>
 /*-------------------------------------------
 inline void RoundUp(int align, char* &buf, int* left_len)
@@ -45,7 +45,7 @@ inline void RoundUp(int align, char* &buf, int* left_len)
 }
 -------------------------------------------*/
 /// <summary>
-/// ¶ÔÆëµ±Ç°Ö¸Õë
+/// å¯¹é½å½“å‰æŒ‡é’ˆ
 /// </summary>
 /// <param name="align"></param>
 /// <param name="buf_begin"></param>
@@ -84,9 +84,9 @@ inline void RoundUp(int align, const char *buf_begin, const char* &buf_current, 
 #undef APPEND_INT
 #undef APPEND_DATA
 #undef APPEND_LONGLONG
-/*´ò°ü*/
+/*æ‰“åŒ…*/
 #define SKIP_BYTES(buf, buf_len, skip_bytes) do{if(int(buf_len) < int(skip_bytes) || (skip_bytes) < 0)THROW_EX("Not enough buff length %d for skip len:%d", (buf_len), (skip_bytes));buf_len -= (skip_bytes);buf += (skip_bytes);}while(0)
-//´ÓÍøÂçbufferÖĞ½â°üÊı¾İ
+//ä»ç½‘ç»œbufferä¸­è§£åŒ…æ•°æ®
 #define N_FETCHCHAR(buff, val) do{val = *(unsigned char*)buff; buff += sizeof(char);/*fprintf(stderr, "fetch char. " #buff " " #val "is %u\n", val);*/}while(0)
 #define N_FETCHSHORT(buff, val) do{val = ntohs(*(unsigned short*)(buff)); buff += sizeof(short);/*fprintf(stderr, "fetch short. " #buff " " #val "is %u\n", val);*/}while(0)
 #define N_FETCHINT(buff, val) do{val = ntohl(*(unsigned*)(buff)); buff += sizeof(int);/*fprintf(stderr, "fetch int. " #buff " " #val "is %u\n", val);*/}while(0)
@@ -108,7 +108,7 @@ inline void RoundUp(int align, const char *buf_begin, const char* &buf_current, 
 #define FETCH_LONGLONG(buff, buf_len, val) do{if(buf_len < (int)sizeof(unsigned long long))THROW_EX("Fetch unsigned long long failed. buf_len;%d less than sizeof(unsigned long long)\n", buf_len);val=htonq(*(unsigned long long*)buff);buff+=sizeof(unsigned long long);buf_len -= sizeof(unsigned long long);}while(0)
 #endif
 
-//ÏòÍøÂçbufferÖĞ´ò°üÊı¾İ
+//å‘ç½‘ç»œbufferä¸­æ‰“åŒ…æ•°æ®
 #define N_APPEND_CHAR(buff, val) do{        \
     unsigned char c = (unsigned char)(val); \
     memcpy(buff, &c, sizeof(char)); buff += sizeof(char);}while(0)
@@ -128,7 +128,7 @@ inline void RoundUp(int align, const char *buf_begin, const char* &buf_current, 
 #define N_APPEND_DATA(buff, pointer, len) do{memcpy(buff, pointer, len); buff += len;}while(0)
 
 #ifndef APPEND_CHAR
-//ÏòÍøÂçbufferÖĞ´ò°üÊı¾İ£¬Òç³ö¼ì²é
+//å‘ç½‘ç»œbufferä¸­æ‰“åŒ…æ•°æ®ï¼Œæº¢å‡ºæ£€æŸ¥
 #define APPEND_CHAR(buff, buf_len, val) do{  																		 \
 	if((buf_len) < (int)sizeof(char))THROW_EX("AppendChar failed. buf_len:%d is too small.", buf_len); 					 \
 	N_APPEND_CHAR(buff, val);   																					 \
